@@ -10,35 +10,15 @@ class WordList() {
 
 
     fun initializeWords() {
-        val word = Word("Hello", "Hej")
-        wordList.add(word)
-        wordList.add(Word("Good bye", "Hej då"))
-        wordList.add(Word("Thank you", "Tack"))
-        wordList.add(Word("Welcome", "Välkommen"))
-        wordList.add(Word("Computer", "Dator"))
+        wordList.add(Word(english= "Hello", swedish = "Hej"))
+        wordList.add(Word(english="Good bye", swedish = "Hej då"))
+        wordList.add(Word(english="Thank you", swedish = "Tack"))
+        wordList.add(Word(english="Welcome",swedish =  "Välkommen"))
+        wordList.add(Word(english="Computer", swedish = "Dator"))
 
     }
 
-//    fun getNewWord() : Word {
-//        val rnd = (0 until wordList.size).random()
-//        return wordList[rnd]
-//    }
-
-
-    // alternativ 3
-//    fun getNewWord() : Word {
-//        if(wordList.isEmpty() ) {
-//            initializeWords()
-//        }
-//
-//        val rnd = (0 until wordList.size).random()
-//        val word = wordList.removeAt(rnd)
-//
-//        return word
-//    }
-
-    //alternativ 1
-    fun getNewWord() : Word {
+      fun getNewWord() : Word {
         if (wordList.size == usedWords.size) {
             usedWords.clear()
         }
@@ -55,17 +35,17 @@ class WordList() {
         return word
     }
 
+
     // 1. en till lista med redan använda ord
     // 2. lista med index på använda ord
     // 3. använt ord tas bort från listan
     // 4. ordet håller reda på om det redan är använt
 
+    // 1. another list of already used words
+    // 2. list with index of used words
+    // 3. used word is removed from the list
+    // 4. the word keeps track of whether it is already used
 }
-
-
-
-
-
 
 
 

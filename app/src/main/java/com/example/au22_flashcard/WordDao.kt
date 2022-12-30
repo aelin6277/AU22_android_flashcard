@@ -12,7 +12,7 @@ interface WordDao {
     fun insert(word: Word)
 
     @Delete
-    fun delete(delete: Delete)
+    fun delete(delete: Word)
 
     @Query("SELECT * FROM word_table")
     fun getAllWords() : List<Word>
