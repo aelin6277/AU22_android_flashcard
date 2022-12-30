@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
     var currentWord : Word? = null
     val wordList = WordList()
     lateinit var db : AppDatabase
-    lateinit var addWordButton : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

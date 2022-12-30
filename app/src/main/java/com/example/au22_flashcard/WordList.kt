@@ -10,25 +10,27 @@ class WordList() {
 
 
     fun initializeWords() {
-        wordList.add(Word(english= "Hello", swedish = "Hej"))
-        wordList.add(Word(english="Good bye", swedish = "Hej då"))
-        wordList.add(Word(english="Thank you", swedish = "Tack"))
-        wordList.add(Word(english="Welcome",swedish =  "Välkommen"))
-        wordList.add(Word(english="Computer", swedish = "Dator"))
+        wordList.add(Word(english = "Hello", swedish = "Hej"))
+        wordList.add(Word(english ="Good bye", swedish = "Hej då"))
+        wordList.add(Word(english ="Thank you", swedish = "Tack"))
+        wordList.add(Word(english ="Welcome", swedish =  "Välkommen"))
+        wordList.add(Word(english ="Computer", swedish = "Dator"))
+
+        //TODO read all words from DB and add 'em to wordList
 
     }
 
-      fun getNewWord() : Word {
+    fun getNewWord(): Word {
         if (wordList.size == usedWords.size) {
             usedWords.clear()
         }
 
-        var word : Word? = null
+        var word: Word? = null
 
         do {
             val rnd = (0 until wordList.size).random()
             word = wordList[rnd]
-        } while(usedWords.contains(word))
+        } while (usedWords.contains(word))
 
         usedWords.add(word!!)
 
