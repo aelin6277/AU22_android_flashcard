@@ -10,15 +10,19 @@ class WordList() {
 
 
     fun initializeWords() {
+        val word = Word(english = "Hello", swedish = "Hej")
+        wordList.add(word)
+
         wordList.add(Word(english = "Hello", swedish = "Hej"))
         wordList.add(Word(english ="Good bye", swedish = "Hej då"))
         wordList.add(Word(english ="Thank you", swedish = "Tack"))
         wordList.add(Word(english ="Welcome", swedish =  "Välkommen"))
         wordList.add(Word(english ="Computer", swedish = "Dator"))
 
-        //TODO read all words from DB and add 'em to wordList
+        //TODO read all words from DB and add 'em to wordList //SINGELTON SEE APPDATABASE
 
     }
+
 
     fun getNewWord(): Word {
         if (wordList.size == usedWords.size) {
@@ -47,6 +51,12 @@ class WordList() {
     // 2. list with index of used words
     // 3. used word is removed from the list
     // 4. the word keeps track of whether it is already used
+
+    //   val list = loadAllWords()
+    //
+    //    launch {
+    //       val wordList = list.await()
+    //    }
 }
 
 

@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.TextView
+import androidx.room.Room
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,41 +21,51 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        db = AppDatabase.getInstance(this)
-        wordList.initializeWords()
-
         wordView = findViewById(R.id.wordTextView)
+
+
+        fun showNewWord() {
+
+            currentWord = wordList.getNewWord()
+            wordView.text = currentWord?.swedish
+        }
         showNewWord()
+
+        fun revealTranslation() {
+            wordView.text = currentWord?.english
+        }
         wordView.setOnClickListener {
             revealTranslation()
         }
 
-        val button = findViewById<Button>(R.id.addWordButton)
+
+         fun onTouchEvent(event: MotionEvent?): Boolean {
+
+            if (event?.action == MotionEvent.ACTION_UP) {
+                showNewWord()
+            }
+            Log.d("!!!", "Touch!")
+            return true
+        }
+
+            fun initializeWords() {
+                val word = Word
+            }
+
+
+            val button = findViewById<Button>(R.id.addWordButton)
         button.setOnClickListener {
             val intent = Intent(this,AddNewWord::class.java)
             startActivity(intent)
+            //TODO refresh wordList (you may clear the list and then call initializeWords())
         }
-    }
-
-    fun revealTranslation() {
-        wordView.text = currentWord?.english
-    }
+ }
 
 
-    fun showNewWord() {
-
-        currentWord = wordList.getNewWord()
-        wordView.text = currentWord?.swedish
-    }
 
 
-    override fun onTouchEvent(event: MotionEvent?): Boolean {
 
-        if (event?.action == MotionEvent.ACTION_UP) {
-            showNewWord()
-        }
 
-        return true
     }
 
 
