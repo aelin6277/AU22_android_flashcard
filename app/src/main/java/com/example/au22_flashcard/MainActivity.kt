@@ -1,5 +1,6 @@
 package com.example.au22_flashcard
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,70 +8,64 @@ import android.util.Log
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.TextView
-import androidx.room.Room
+import androidx.activity.result.contract.ActivityResultContracts
 
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var wordView : TextView
-    var currentWord : Word? = null
-    val wordList = WordList()
-    lateinit var db : AppDatabase
+    lateinit var wordView: TextView
+    var currentWord: Word? = null
+
+    lateinit var wordList: WordList
+    private lateinit var db : AppDatabase
+
+    val intentLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            //this will be executed after addword is finished
+            wordList.loadAllWords()
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        db = AppDatabase.getInstance(this)
+        wordList = WordList(db)
+
+        wordList.loadAllWords()
+
         wordView = findViewById(R.id.wordTextView)
-
-
-        fun showNewWord() {
-
-            currentWord = wordList.getNewWord()
-            wordView.text = currentWord?.swedish
-        }
-        showNewWord()
-
-        fun revealTranslation() {
-            wordView.text = currentWord?.english
-        }
         wordView.setOnClickListener {
             revealTranslation()
         }
 
+        showNewWord()
 
-         fun onTouchEvent(event: MotionEvent?): Boolean {
-
-            if (event?.action == MotionEvent.ACTION_UP) {
-                showNewWord()
-            }
-            Log.d("!!!", "Touch!")
-            return true
-        }
-
-            fun initializeWords() {
-                val word = Word
-            }
-
-
-            val button = findViewById<Button>(R.id.addWordButton)
+        val button = findViewById<Button>(R.id.addWordButton)
         button.setOnClickListener {
-            val intent = Intent(this,AddNewWord::class.java)
-            startActivity(intent)
-            //TODO refresh wordList (you may clear the list and then call initializeWords())
+            val intent = Intent(this, AddNewWord::class.java)
+            intentLauncher.launch(intent)
         }
- }
+    }
 
+    fun showNewWord() {
+        currentWord = wordList.getNewWord()
+        wordView.text = currentWord?.swedish
+    }
 
-
-
-
-
+    fun revealTranslation() {
+        wordView.text = currentWord?.english
     }
 
 
-
-
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (event?.action == MotionEvent.ACTION_UP) {
+            showNewWord()
+            Log.d("!!!", "Touch!")
+        }
+        return true
+    }
+//koppla med knapparna, göra det som står ovan
 }
 
 //Vad ska göras:

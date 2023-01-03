@@ -9,13 +9,13 @@ import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.internal.synchronized
 
 @Database(entities = [Word::class], version = 1)
-abstract class AppDatabase : RoomDatabase(){
-    abstract val wordDao : WordDao
-    abstract fun WordDao(): WordDao
+abstract class AppDatabase : RoomDatabase() {
+    abstract val wordDao: WordDao
 
+    companion object {
+        @Volatile
+        private var INSTANCE: AppDatabase? = null
 
-        //SINGELTON
-        private var INSTANCE : AppDatabase? = null
         @OptIn(InternalCoroutinesApi::class)
         fun getInstance(context: Context): AppDatabase {
             if (INSTANCE == null) {
@@ -23,19 +23,21 @@ abstract class AppDatabase : RoomDatabase(){
                     INSTANCE = buildRoomDB(context)
                 }
             }
-                return INSTANCE!!
-            }
+            return INSTANCE!!
         }
-                    private fun buildRoomDB(context: Context) = Room.databaseBuilder(
-                        context.applicationContext,
-                        AppDatabase::class.java,
-                        "word_database"
-                    )
-                        .fallbackToDestructiveMigration()
-                        .build()
 
+        private fun buildRoomDB(context: Context): AppDatabase? {
+            return Room
+                .databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java,
+                    "word_database"
+                )
+                .fallbackToDestructiveMigration()
+                .build()
+        }
+    }
 
-
-
+}
 
 

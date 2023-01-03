@@ -1,17 +1,18 @@
 package com.example.au22_flashcard
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import androidx.room.Transaction
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 class AddNewWord : AppCompatActivity(), CoroutineScope {
 
     private lateinit var job : Job
-    lateinit var db : AppDatabase
+    private lateinit var db : AppDatabase
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
@@ -30,12 +31,11 @@ class AddNewWord : AppCompatActivity(), CoroutineScope {
             val editTextSwedish = findViewById<EditText>(R.id.editTextSwedish)
             val swedishWord = editTextSwedish.text.toString()
 
-            launch(Dispatchers.IO) {
-                db.wordDao.insert(Word(english = englishWord, swedish = swedishWord))
-            }
-
-
-            finish()
+            launch {
+                async(Dispatchers.IO) {
+                    db.wordDao.insert(Word(english = englishWord, swedish = swedishWord))
+                }.await()
+            }.invokeOnCompletion { finish() }
         }
     }
 }
